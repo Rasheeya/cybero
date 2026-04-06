@@ -113,15 +113,17 @@ option {
 }
 
 .btn-outline {
-    background: transparent;
-    border: 1.5px solid var(--border);
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--text-white);
     color: var(--text-white);
+    font-weight: 600;
 }
 
 .btn-outline:hover {
     border-color: var(--primary);
-    background: rgba(189, 85, 242, 0.05);
+    background: rgba(189, 85, 242, 0.15);
     color: var(--primary);
+    box-shadow: 0 8px 25px rgba(189, 85, 242, 0.2);
 }
 
 /* Header */
