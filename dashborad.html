@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Dashboard | Stackly Intel SOC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/js/all.min.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --sidebar-width: 320px;
+        }
+        
+        body { background: #080809; overflow-y: auto; }
+        
+        .dash-layout {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Glassmorphism */
+        .sidebar {
+            background: rgba(13, 13, 14, 0.4);
+            backdrop-filter: blur(40px);
+            border-right: 1px solid var(--border);
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+
+
+        .nav-menu { 
+            flex: 1; 
+            margin-top: 40px; 
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 18px 24px;
+            border-radius: 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(189, 85, 242, 0.1);
+            color: #fff;
+            box-shadow: inset 0 0 15px rgba(189, 85, 242, 0.05);
+        }
+
+        /* Main Content Workspace */
+        .main-view {
+            padding: 50px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            position: relative !important; /* Force reset global fixed header */
+            top: 0 !important;
+            width: 100% !important;
+            background: transparent !important;
+            backdrop-filter: none !important;
+            height: auto !important;
+        }
+
+        .header-title h1 { 
+            font-size: 2.8rem; 
+            margin-bottom: 10px; 
+            letter-spacing: -1.5px;
+            line-height: 1.1; 
+        }
+        
+        .header-title p { 
+            color: var(--text-muted); 
+            letter-spacing: 2px; 
+            font-size: 0.75rem; 
+            font-weight: 800; 
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Grid System */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover { 
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            background: rgba(189, 85, 242, 0.03);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            opacity: 0.5;
+        }
+
+        .stat-val { font-size: 2.8rem; font-weight: 800; margin: 15px 0 5px; font-family: 'JetBrains Mono', monospace; color: #fff; }
+        .stat-label { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
+
+        /* Visualizations */
+        .large-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+        }
+
+        .chart-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 35px;
+        }
+
+        .threat-map {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(rgba(8, 8, 9, 0.8), rgba(8, 8, 9, 0.8)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1472&auto=format&fit=crop') center/cover;
+            border-radius: 20px;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+
+        .feed-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .feed-item:last-child { border-bottom: none; }
+        .severity { padding: 4px 10px; border-radius: 4px; background: rgba(247, 215, 148, 0.1); color: #f7d794; font-weight: 800; font-size: 0.7rem; letter-spacing: 1px; }
+        .severity.high { background: rgba(255, 77, 77, 0.1); color: #ff4d4d; }
+
+        .profile-badge {
+            background: var(--primary);
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            box-shadow: 0 10px 20px var(--primary-glow);
+        }
+
+        /* Dashboard Media Queries */
+        @media (max-width: 1200px) {
+            .main-view { padding: 40px; }
+            .analytics-grid { gap: 20px; }
+        }
+
+        @media (max-width: 992px) {
+            .dash-layout { grid-template-columns: 1fr; }
+            .sidebar { 
+                position: relative; 
+                height: auto; 
+                border-right: none; 
+                border-bottom: 1px solid var(--border);
+                padding: 30px;
+            }
+            .sidebar-logo { margin-bottom: 30px; }
+            .nav-menu { flex-direction: row; flex-wrap: wrap; margin-top: 0; gap: 10px; }
+            .nav-item { padding: 12px 20px; }
+            .header-title h1 { font-size: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .analytics-grid { grid-template-columns: 1fr; }
+            .large-grid { grid-template-columns: 1fr; }
+            .main-view { padding: 30px 20px; gap: 40px; }
+            .dash-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .profile-section { width: 100%; justify-content: space-between; }
+        }
+
+        @media (max-width: 480px) {
+            .nav-menu { flex-direction: column; width: 100%; }
+            .nav-item { width: 100%; justify-content: center; }
+            .header-title h1 { font-size: 1.8rem; }
+            .stat-val { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="data-grid-bg"></div>
+    <div class="dash-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="index.html" class="logo">
+                <img src="/asset/white.webp" alt="Stackly" style="height: 45px;">
+            </a>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active"><i class="fa-solid fa-satellite"></i> SOC Terminal</a>
+                <a href="404.html" class="nav-item"><i class="fa-solid fa-user-shield"></i> Threat Intel</a>
+                <a href="404.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> Data Assets</a>
+                <a href="404.html" class="nav-item"><i class="fa-solid fa-key"></i> Keys & Vaults</a>
+                <a href="404.html" class="nav-item"><i class="fa-solid fa-gear"></i> Vector Setup</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="nav-item" style="color: #ff4d4d; opacity: 0.8;"><i class="fa-solid fa-power-off"></i> Terminate Session</a>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-view">
+            <header class="dash-header">
+                <div class="header-title">
+                    <h1>Operational Intelligence</h1>
+                    <p><span class="stat-pulse"></span> SYSTEM STATUS: <span style="color: #2ecc71; font-weight: 800;">OPTIMAL DEFENSE</span></p>
+                </div>
+                <div class="profile-section" style="display: flex; align-items: center; gap: 20px;">
+                    <div style="text-align: right;">
+                        <span style="font-weight: 800; display: block; font-size: 0.95rem;">COMMANDER DOE</span>
+                        <span style="font-size: 0.75rem; color: var(--primary); font-weight: 800; letter-spacing: 1px;">LEVEL 4 CLEARANCE</span>
+                    </div>
+                    <div class="profile-badge">JD</div>
+                </div>
+            </header>
+
+            <!-- Stat Row -->
+            <section class="analytics-grid">
+                <div class="stat-card reveal">
+                    <span class="stat-label">Active Scans</span>
+                    <h2 class="stat-val">1.2B</h2>
+                    <p style="color: #2ecc71; font-size: 0.85rem;">+14% Policy Efficiency</p>
+                </div>
+                <div class="stat-card reveal" style="transition-delay: 0.1s;">
+                    <span class="stat-label">Blocked Vectors</span>
+                    <h2 class="stat-val">42.8K</h2>
+                    <p style="color: #2ecc71; font-size: 0.85rem;">99.9% Neutralized</p>
+                </div>
+                <div class="stat-card reveal" style="transition-delay: 0.2s;">
+                    <span class="stat-label">Node Integrity</span>
+                    <h2 class="stat-val">99.8%</h2>
+                    <p style="color: #ff4d4d; font-size: 0.85rem;">2 Anomalies Isolated</p>
+                </div>
+            </section>
+
+            <!-- Interactive Grid -->
+            <section class="large-grid">
+                <div class="chart-box reveal">
+                    <h3 style="margin-bottom: 25px;">Global Threat Visualization</h3>
+                    <div class="threat-map">
+                        <div class="map-ping" style="top: 30%; left: 20%;"></div>
+                        <div class="map-ping" style="top: 60%; left: 75%;"></div>
+                        <div class="map-ping" style="top: 45%; left: 50%;"></div>
+                    </div>
+                    <div style="margin-top: 30px; display: flex; justify-content: space-between;">
+                        <div>
+                            <span style="color: var(--text-secondary); display: block; font-size: 0.8rem;">LATENCY</span>
+                            <span style="font-weight: 800;">4.2ms</span>
+                        </div>
+                        <div>
+                            <span style="color: var(--text-secondary); display: block; font-size: 0.8rem;">TRAFFIC</span>
+                            <span style="font-weight: 800;">PETABYTE/sec</span>
+                        </div>
+                        <div>
+                            <span style="color: var(--text-secondary); display: block; font-size: 0.8rem;">SECURE NODES</span>
+                            <span style="font-weight: 800;">142,501</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-box reveal" style="transition-delay: 0.1s;">
+                    <h3 style="margin-bottom: 25px;">Live Vector Feed</h3>
+                    <div class="vector-feed">
+                        <div class="feed-item">
+                            <div>
+                                <span style="font-weight: 700; display: block; font-size: 0.9rem;">Brute-Force Shield</span>
+                                <span style="font-size: 0.75rem; font-family: 'JetBrains Mono'; opacity: 0.6;">IP: 192.164.0.12</span>
+                            </div>
+                            <span class="severity">MODERATE</span>
+                        </div>
+                        <div class="feed-item">
+                            <div>
+                                <span style="font-weight: 700; display: block; font-size: 0.9rem;">SQL Injection Sink</span>
+                                <span style="font-size: 0.75rem; font-family: 'JetBrains Mono'; opacity: 0.6;">DB_CORE_PROD</span>
+                            </div>
+                            <span class="severity high">CRITICAL</span>
+                        </div>
+                        <div class="feed-item">
+                            <div>
+                                <span style="font-weight: 700; display: block; font-size: 0.9rem;">DDoS Reflector</span>
+                                <span style="font-size: 0.75rem; font-family: 'JetBrains Mono'; opacity: 0.6;">EDGE_GATEWAY_04</span>
+                            </div>
+                            <span class="severity">LOW</span>
+                        </div>
+                        <div class="feed-item">
+                            <div>
+                                <span style="font-weight: 700; display: block; font-size: 0.9rem;">Zero-Day Sandbox</span>
+                                <span style="font-size: 0.75rem; font-family: 'JetBrains Mono'; opacity: 0.6;">KERNEL_ISOLATE</span>
+                            </div>
+                            <span class="severity high">CRITICAL</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
