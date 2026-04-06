@@ -204,7 +204,10 @@
             <input type="email" class="input-box" placeholder="user@domain.com" required>
 
             <label class="form-label">Password</label>
-            <input type="password" class="input-box" placeholder="********" required>
+            <div class="password-wrapper">
+                <input type="password" class="input-box" placeholder="********" required>
+                <span class="password-toggle" aria-label="Show password"><i class="fa-solid fa-eye"></i></span>
+            </div>
 
             <div class="form-footer">
                 <label class="remember-me">
@@ -223,6 +226,15 @@
 
     <script src="main.js"></script>
     <script>
+        document.querySelectorAll('.password-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const input = toggle.previousElementSibling;
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                toggle.innerHTML = `<i class="fa-solid ${isPassword ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
+            });
+        });
+
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('.action-btn');
