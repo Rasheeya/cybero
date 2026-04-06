@@ -372,6 +372,9 @@ header.scrolled {
     background-size: cover;
     background-position: center;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
 }
 
 .service-card::before {
@@ -430,7 +433,8 @@ header.scrolled {
 
 .service-card p {
     color: var(--text-muted);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    flex-grow: 1;
 }
 
 .learn-more {
@@ -443,6 +447,9 @@ header.scrolled {
     font-size: 0.95rem;
     line-height: 1.4;
     white-space: nowrap;
+    transition: gap 0.3s ease;
+    margin-top: auto;
+}
     transition: gap 0.3s ease;
 }
 
