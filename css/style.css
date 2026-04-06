@@ -597,6 +597,9 @@ footer {
 .form-group label { display: block; margin-bottom: 10px; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; }
 .form-group input, .form-group select, .form-group textarea { width: 100%; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 12px; padding: 15px 20px; color: #fff; font-family: inherit; font-size: 1rem; outline: none; transition: var(--transition); }
 .form-group input:focus { background: rgba(189, 85, 242, 0.05); border-color: var(--primary); box-shadow: 0 0 20px rgba(189, 85, 242, 0.1); }
+.form-message { margin-top: 12px; font-size: 0.95rem; line-height: 1.4; opacity: 0.95; }
+.form-message.error { color: #ff6b78; }
+.form-message.success { color: #7ef4a8; }
 
 .password-wrapper { position: relative; }
 .password-wrapper .input-box { padding-right: 55px; }

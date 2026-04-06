@@ -217,6 +217,7 @@
             </div>
 
             <button type="submit" class="action-btn">Log In</button>
+            <div class="form-message"></div>
         </form>
 
         <div class="bottom-nav">
@@ -237,14 +238,47 @@
 
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            const btn = e.target.querySelector('.action-btn');
+            const form = e.target;
+            const emailInput = form.querySelector('input[type="email"]');
+            const passwordInput = form.querySelector('input[type="password"]');
+            const message = form.querySelector('.form-message');
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+            if (!email) {
+                message.textContent = 'Please enter your email address.';
+                message.className = 'form-message error';
+                emailInput.focus();
+                return;
+            }
+            if (!emailValid) {
+                message.textContent = 'Please enter a valid email address.';
+                message.className = 'form-message error';
+                emailInput.focus();
+                return;
+            }
+            if (!password) {
+                message.textContent = 'Please enter your password.';
+                message.className = 'form-message error';
+                passwordInput.focus();
+                return;
+            }
+
+            message.textContent = 'Authenticating...';
+            message.className = 'form-message success';
+            const btn = form.querySelector('.action-btn');
+            btn.disabled = true;
             btn.innerText = 'AUTHENTICATING...';
+
             setTimeout(() => {
                 btn.innerText = 'ACCESS GRANTED';
                 btn.style.borderColor = '#2ecc71';
                 btn.style.color = '#2ecc71';
+                message.textContent = 'Login successful. Redirecting...';
+                message.className = 'form-message success';
                 setTimeout(() => window.location.href = 'dashborad.html', 1000);
-            }, 1500);
+            }, 1200);
         });
     </script>
 </body>

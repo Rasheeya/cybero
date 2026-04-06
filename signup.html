@@ -235,6 +235,7 @@
             </label>
 
             <button type="submit" class="action-btn">Create Account</button>
+            <div class="form-message"></div>
         </form>
 
         <div class="bottom-nav">
@@ -255,14 +256,77 @@
 
         document.getElementById('signup-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            const btn = e.target.querySelector('.action-btn');
+            const form = e.target;
+            const nameInput = form.querySelector('input[type="text"]');
+            const emailInput = form.querySelector('input[type="email"]');
+            const phoneInput = form.querySelector('input[type="tel"]');
+            const passwordInput = form.querySelector('input[type="password"]');
+            const confirmInput = form.querySelectorAll('input[type="password"]')[1];
+            const checkbox = form.querySelector('input[type="checkbox"]');
+            const message = form.querySelector('.form-message');
+            const email = emailInput.value.trim();
+            const phone = phoneInput.value.trim();
+            const password = passwordInput.value.trim();
+            const confirmPassword = confirmInput.value.trim();
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+            if (!nameInput.value.trim()) {
+                message.textContent = 'Please enter your full name.';
+                message.className = 'form-message error';
+                nameInput.focus();
+                return;
+            }
+            if (!email) {
+                message.textContent = 'Please enter your email address.';
+                message.className = 'form-message error';
+                emailInput.focus();
+                return;
+            }
+            if (!emailValid) {
+                message.textContent = 'Please enter a valid email address.';
+                message.className = 'form-message error';
+                emailInput.focus();
+                return;
+            }
+            if (!phone) {
+                message.textContent = 'Please enter your phone number.';
+                message.className = 'form-message error';
+                phoneInput.focus();
+                return;
+            }
+            if (!password) {
+                message.textContent = 'Please enter a password.';
+                message.className = 'form-message error';
+                passwordInput.focus();
+                return;
+            }
+            if (password !== confirmPassword) {
+                message.textContent = 'Passwords do not match.';
+                message.className = 'form-message error';
+                confirmInput.focus();
+                return;
+            }
+            if (!checkbox.checked) {
+                message.textContent = 'Please accept the terms and privacy policy.';
+                message.className = 'form-message error';
+                checkbox.focus();
+                return;
+            }
+
+            message.textContent = 'Creating your user profile...';
+            message.className = 'form-message success';
+            const btn = form.querySelector('.action-btn');
+            btn.disabled = true;
             btn.innerText = 'CREATING PROFILE...';
+
             setTimeout(() => {
                 btn.innerText = 'IDENTITY SECURED';
                 btn.style.borderColor = '#2ecc71';
                 btn.style.color = '#2ecc71';
+                message.textContent = 'Signup complete. Redirecting to login...';
+                message.className = 'form-message success';
                 setTimeout(() => window.location.href = 'login.html', 1500);
-            }, 2000);
+            }, 1800);
         });
     </script>
 </body>

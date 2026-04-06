@@ -99,19 +99,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // Map Section logic handled by native HTML lazy loading and global CSS.
 
     // Form Handling Mockup
-    const newsletterForm = document.querySelector('.newsletter-form');
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', (e) => {
+    const newsletterForms = document.querySelectorAll('.newsletter-form');
+    newsletterForms.forEach((form) => {
+        const input = form.querySelector('input[type="email"]');
+        let status = form.querySelector('.form-message');
+        if (!status) {
+            status = document.createElement('div');
+            status.className = 'form-message';
+            form.appendChild(status);
+        }
+
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
-            const btn = newsletterForm.querySelector('button');
-            const input = newsletterForm.querySelector('input');
-            
-            if (input.value) {
-                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Securing...';
-                setTimeout(() => {
-                    window.location.href = '404.html';
-                }, 800);
+            const btn = form.querySelector('button');
+            const email = input.value.trim();
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+            if (!email) {
+                status.textContent = 'Please enter your email address.';
+                status.className = 'form-message error';
+                input.focus();
+                return;
             }
+
+            if (!emailValid) {
+                status.textContent = 'Please enter a valid email address.';
+                status.className = 'form-message error';
+                input.focus();
+                return;
+            }
+
+            status.textContent = '';
+            status.className = 'form-message';
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Securing...';
+
+            setTimeout(() => {
+                btn.innerHTML = 'Subscribed';
+                status.textContent = 'Thank you! You are now on our security newsletter list.';
+                status.className = 'form-message success';
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Join';
+                    form.reset();
+                    status.textContent = '';
+                    status.className = 'form-message';
+                }, 1800);
+            }, 900);
         });
-    }
+    });
 });
