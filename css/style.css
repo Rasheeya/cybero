@@ -436,9 +436,18 @@ header.scrolled {
 .learn-more {
     font-weight: 600;
     color: var(--primary);
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    transition: gap 0.3s ease;
+}
+
+.learn-more:hover {
+    gap: 12px;
 }
 
 /* CTA Section */
