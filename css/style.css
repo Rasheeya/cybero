@@ -95,6 +95,11 @@ option {
     border: 1px solid transparent;
 }
 
+.btn i {
+    margin-left: 0.7rem;
+    vertical-align: middle;
+}
+
 .btn-primary {
     background: var(--primary);
     color: #fff;
