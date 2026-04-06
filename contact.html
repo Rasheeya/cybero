@@ -30,7 +30,7 @@
                 </div>
             </nav>
             <div class="auth-btns">
-                <a href="Log In.html" class="btn btn-outline">Log In</a>
+                <a href="login.html" class="btn btn-outline">Log In</a>
             </div>
             <div class="mobile-menu-toggle">
                 <i class="fa-solid fa-bars"></i>
@@ -95,9 +95,10 @@
                     </div>
                     <div class="form-group">
                         <label>MESSAGE</label>
-                        <textarea rows="5" placeholder="Describe your current infrastructure needs..."></textarea>
+                        <textarea rows="5" placeholder="Describe your current infrastructure needs..." required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%; padding: 18px;">Send Inquiry <i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i></button>
+                    <div class="form-message"></div>
                 </form>
             </div>
         </div>
@@ -173,18 +174,5 @@
     </footer>
 
     <script src="main.js"></script>
-    <script>
-        document.getElementById('defense-contact-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button');
-            btn.innerText = 'Sent Successfully!';
-            btn.style.background = '#00c853';
-            setTimeout(() => {
-                btn.innerHTML = 'Send Inquiry <i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i>';
-                btn.style.background = '';
-                e.target.reset();
-            }, 3000);
-        });
-    </script>
 </body>
 </html>

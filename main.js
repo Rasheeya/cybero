@@ -82,19 +82,89 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Smooth Scroll for Internal Links
+    document.querySelectorAll('header .nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                mobileToggle.classList.remove('active');
+            }
+        });
+    });
+
+    // Smooth Scroll for Internal Links with header offset
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                const headerHeight = header ? header.offsetHeight + 10 : 0;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
             }
         });
     });
+
+    // Contact Form Validation and Feedback
+    const contactForm = document.getElementById('defense-contact-form');
+    if (contactForm) {
+        let contactStatus = contactForm.querySelector('.form-message');
+        if (!contactStatus) {
+            contactStatus = document.createElement('div');
+            contactStatus.className = 'form-message';
+            contactForm.appendChild(contactStatus);
+        }
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fullNameInput = contactForm.querySelector('input[type="text"]');
+            const emailInput = contactForm.querySelector('input[type="email"]');
+            const selectInput = contactForm.querySelector('select');
+            const messageInput = contactForm.querySelector('textarea');
+            const btn = contactForm.querySelector('button');
+            const email = emailInput.value.trim();
+            const messageText = messageInput.value.trim();
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+            if (!fullNameInput.value.trim()) {
+                contactStatus.textContent = 'Please enter your full name.';
+                contactStatus.className = 'form-message error';
+                fullNameInput.focus();
+                return;
+            }
+            if (!email) {
+                contactStatus.textContent = 'Please enter your email address.';
+                contactStatus.className = 'form-message error';
+                emailInput.focus();
+                return;
+            }
+            if (!emailValid) {
+                contactStatus.textContent = 'Please enter a valid email address.';
+                contactStatus.className = 'form-message error';
+                emailInput.focus();
+                return;
+            }
+            if (!messageText) {
+                contactStatus.textContent = 'Please share a brief description of your request.';
+                contactStatus.className = 'form-message error';
+                messageInput.focus();
+                return;
+            }
+
+            contactStatus.textContent = 'Sending inquiry...';
+            contactStatus.className = 'form-message success';
+            btn.disabled = true;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Sending...';
+
+            setTimeout(() => {
+                contactStatus.textContent = 'Inquiry sent successfully. We will reach out within 24 hours.';
+                contactStatus.className = 'form-message success';
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+                contactForm.reset();
+            }, 1600);
+        });
+    }
 
     // Map Section logic handled by native HTML lazy loading and global CSS.
 
