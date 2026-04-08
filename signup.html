@@ -10,14 +10,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             background: #080b12;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             min-height: 100vh;
+            font-family: 'Inter', sans-serif;
         }
 
         .signup-card {
@@ -37,8 +42,13 @@
         }
 
         .logo-box img {
-            height: 48px;
-            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.3));
+            height: 52px;
+            filter: drop-shadow(0 0 15px rgba(184, 21, 199, 0.4));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.05);
         }
 
         .signup-title {
@@ -46,8 +56,9 @@
             font-family: 'Urbanist', sans-serif;
             font-size: 32px;
             color: #fff;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .form-label {
@@ -72,15 +83,17 @@
             background: #1e293b;
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 14px 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             color: #fff;
             font-size: 15px;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
 
         .input-box:focus {
             border-color: #b815c7;
+            background: rgba(184, 21, 199, 0.05);
+            box-shadow: 0 0 15px rgba(184, 21, 199, 0.2);
         }
 
         .select-container {
@@ -100,6 +113,12 @@
             appearance: none;
             outline: none;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .styled-select:focus {
+            border-color: #b815c7;
+            box-shadow: 0 0 15px rgba(184, 21, 199, 0.2);
         }
 
         .styled-select option {
@@ -110,27 +129,67 @@
 
 
         .select-container::after {
-            content: '⌄';
+            content: '\f107';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
             position: absolute;
-            right: 18px;
+            right: 20px;
             top: 50%;
             transform: translateY(-50%);
             color: #b815c7;
-            font-size: 18px;
+            font-size: 16px;
             pointer-events: none;
+            transition: 0.3s;
         }
 
         .form-group {
             margin-bottom: 25px;
         }
 
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper .input-box {
+            padding-right: 50px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+        }
+
+        .password-toggle:hover {
+            color: #b815c7;
+        }
+
         .checkbox-container {
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #fff;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.8);
             font-size: 14px;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container input {
+            accent-color: #b815c7;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
         }
 
@@ -170,13 +229,13 @@
         }
 
         @media (max-width: 500px) {
-            body { padding: 40px 15px; }
-            .signup-card { padding: 40px 20px; }
+            body { padding: 20px 15px; }
+            .signup-card { padding: 35px 25px; }
             .form-row {
                 grid-template-columns: 1fr;
-                gap: 25px;
+                gap: 20px;
             }
-            .signup-title { font-size: 26px; }
+            .signup-title { font-size: 26px; margin-bottom: 30px; }
             .action-btn { font-size: 16px; letter-spacing: 1.5px; }
         }
     </style>
@@ -184,7 +243,7 @@
 <body>
     <div class="signup-card reveal">
         <div class="logo-box">
-            <img src="asset/white.webp" alt="Stackly">
+            <img src="./asset/white.webp" alt="Stackly">
         </div>
         <h1 class="signup-title">Create Identity</h1>
 

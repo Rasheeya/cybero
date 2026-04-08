@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Portal | Stackly Partner Org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/js/all.min.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --sidebar-width: 320px;
+        }
+        
+        body { background: #080b12; overflow-y: auto; }
+        
+        .dash-layout {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Glassmorphism */
+        .sidebar {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(40px);
+            border-right: 1px solid var(--border);
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .sidebar-logo .logo {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .sidebar-logo img {
+            height: 50px !important;
+            filter: drop-shadow(0 0 12px rgba(184, 21, 199, 0.4));
+        }
+
+        .nav-menu { 
+            flex: 1; 
+            margin-top: 40px; 
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 18px 24px;
+            border-radius: 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(184, 21, 199, 0.1);
+            color: #fff;
+            box-shadow: inset 0 0 15px rgba(184, 21, 199, 0.05);
+        }
+
+        .main-view {
+            padding: 50px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            top: 0;
+            width: 100%;
+            background: transparent;
+        }
+
+        .header-title h1 { 
+            font-size: 2.8rem; 
+            margin-bottom: 10px; 
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            color: #fff;
+        }
+        
+        .header-title p { 
+            color: var(--text-muted); 
+            letter-spacing: 2px; 
+            font-size: 0.75rem; 
+            font-weight: 800; 
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s ease;
+        }
+
+        .stat-card:hover { 
+            border-color: #b815c7;
+            transform: translateY(-5px);
+            background: rgba(184, 21, 199, 0.03);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, #b815c7, transparent);
+            opacity: 0.5;
+        }
+
+        .stat-val { font-size: 2.8rem; font-weight: 800; margin: 15px 0 5px; font-family: 'JetBrains Mono', monospace; color: #fff; }
+        .stat-label { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
+
+        .large-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 30px;
+        }
+
+        .chart-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 35px;
+        }
+
+        .partner-overview {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(rgba(8, 11, 18, 0.8), rgba(8, 11, 18, 0.8)), url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1374&auto=format&fit=crop') center/cover;
+            border-radius: 20px;
+            position: relative;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .profile-badge {
+            background: #b815c7;
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 992px) {
+            .dash-layout { grid-template-columns: 1fr; }
+            .sidebar { position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+            .nav-menu { flex-direction: row; flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dash-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="index.html" class="logo">
+                    <img src="./asset/white.webp" alt="Stackly" style="height: 45px;">
+                </a>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active"><i class="fa-solid fa-handshake"></i> Partner Node</a>
+                <a href="404.html" class="nav-item"><i class="fa-solid fa-file-contract"></i> Agreements</a>
+                <a href="404.html" class="nav-item"><i class="fa-solid fa-users-rectangle"></i> Team Access</a>
+                <a href="404.html" class="nav-item"><i class="fa-solid fa-briefcase"></i> Project Assets</a>
+                <a href="404.html" class="nav-item"><i class="fa-solid fa-bell"></i> Notifications</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="login.html" class="nav-item" style="color: #ff4d4d; opacity: 0.8;"><i class="fa-solid fa-power-off"></i> Exit Portal</a>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-view">
+            <header class="dash-header">
+                <div class="header-title">
+                    <h1>Partner Intelligence</h1>
+                    <p>SYSTEM STATUS: <span style="color: #00f2ff; font-weight: 800;">ACTIVE PARTNERSHIP</span></p>
+                </div>
+                <div class="profile-section" style="display: flex; align-items: center; gap: 20px;">
+                    <div style="text-align: right;">
+                        <span style="font-weight: 800; display: block; font-size: 0.95rem; color: #fff;">PARTNER ADMIN</span>
+                        <span style="font-size: 0.75rem; color: #b815c7; font-weight: 800; letter-spacing: 1px;">ORG ALPHA</span>
+                    </div>
+                    <div class="profile-badge">PA</div>
+                </div>
+            </header>
+
+            <section class="analytics-grid">
+                <div class="stat-card reveal">
+                    <span class="stat-label">Shared Assets</span>
+                    <h2 class="stat-val">2.5K</h2>
+                    <p style="color: #00f2ff; font-size: 0.85rem;">+5% this month</p>
+                </div>
+                <div class="stat-card reveal" style="animation-delay: 0.1s;">
+                    <span class="stat-label">Active Users</span>
+                    <h2 class="stat-val">142</h2>
+                    <p style="color: #00f2ff; font-size: 0.85rem;">98.2% Engagement</p>
+                </div>
+                <div class="stat-card reveal" style="animation-delay: 0.2s;">
+                    <span class="stat-label">Data Sync</span>
+                    <h2 class="stat-val">REAL-TIME</h2>
+                    <p style="color: #b815c7; font-size: 0.85rem;">Latency 12ms</p>
+                </div>
+            </section>
+
+            <section class="large-grid">
+                <div class="chart-box reveal">
+                    <h3 style="margin-bottom: 25px; color: #fff;">Organizational Metrics</h3>
+                    <div class="partner-overview">
+                        <div style="background: rgba(184, 21, 199, 0.1); padding: 40px; border-radius: 50%; border: 2px solid #b815c7;">
+                            <i class="fa-solid fa-globe" style="font-size: 4rem; color: #b815c7;"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-box reveal" style="animation-delay: 0.1s;">
+                    <h3 style="margin-bottom: 25px; color: #fff;">Recent Activity</h3>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div style="padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;">
+                            <span style="color: #fff;">Access Key Rotated</span>
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">2h ago</span>
+                        </div>
+                        <div style="padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;">
+                            <span style="color: #fff;">Agreement Signed</span>
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">1d ago</span>
+                        </div>
+                        <div style="padding: 15px; display: flex; justify-content: space-between;">
+                            <span style="color: #fff;">New Node Added</span>
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">3d ago</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

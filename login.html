@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Log In | Stackly Defense</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700;900&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             background: #080b12;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 40px 20px;
+            font-family: 'Inter', sans-serif;
         }
 
         .login-card {
@@ -36,8 +45,13 @@
         }
 
         .logo-box img {
-            height: 48px;
-            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.3));
+            height: 52px;
+            filter: drop-shadow(0 0 15px rgba(184, 21, 199, 0.4));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.05);
         }
 
         .login-title {
@@ -45,8 +59,9 @@
             font-family: 'Urbanist', sans-serif;
             font-size: 32px;
             color: #fff;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .form-label {
@@ -65,16 +80,22 @@
 
         .styled-select {
             width: 100%;
-            background: #0f172a; /* Match card background */
-            border: 1.5px solid #b815c7;
-            box-shadow: 0 0 15px rgba(184, 21, 199, 0.4);
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 14px 20px;
+            padding-right: 45px;
             border-radius: 12px;
             color: #fff;
             font-size: 16px;
             appearance: none;
             outline: none;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .styled-select:focus {
+            border-color: #b815c7;
+            box-shadow: 0 0 15px rgba(184, 21, 199, 0.2);
         }
 
         .styled-select option {
@@ -85,32 +106,36 @@
 
 
         .select-container::after {
-            content: '⌄';
+            content: '\f107';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
             position: absolute;
             right: 20px;
             top: 50%;
             transform: translateY(-50%);
             color: #b815c7;
-            font-size: 20px;
+            font-size: 16px;
             pointer-events: none;
+            transition: 0.3s;
         }
 
         /* Inputs */
         .input-box {
             width: 100%;
             background: #1e293b;
-            border: 1px solid rgba(253, 253, 253, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 14px 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             color: #fff;
             font-size: 15px;
-            margin-bottom: 25px;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
 
         .input-box:focus {
             border-color: #b815c7;
+            background: rgba(184, 21, 199, 0.05);
+            box-shadow: 0 0 15px rgba(184, 21, 199, 0.2);
         }
 
         .input-box::placeholder {
@@ -126,11 +151,50 @@
             margin-bottom: 40px;
         }
 
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .password-wrapper .input-box {
+            margin-bottom: 0;
+            padding-right: 50px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+        }
+
+        .password-toggle:hover {
+            color: #b815c7;
+        }
+
         .remember-me {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
+            color: rgba(255, 255, 255, 0.8);
+            user-select: none;
+        }
+
+        .remember-me input {
+            accent-color: #b815c7;
+            width: 16px;
+            height: 16px;
         }
 
         .forgot-pass {
@@ -174,19 +238,39 @@
         }
 
         @media (max-width: 480px) {
-            body { padding: 40px 20px; height: auto; min-height: 100vh; }
-            .login-card { padding: 40px 20px; }
-            .login-title { font-size: 24px; margin-bottom: 30px; }
-            .form-footer { flex-direction: column; gap: 15px; align-items: flex-start; }
+            body {
+                padding: 20px 15px;
+            }
+
+            .login-card {
+                padding: 35px 25px;
+            }
+
+            .login-title {
+                font-size: 26px;
+                margin-bottom: 30px;
+            }
+
+            .form-footer {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .action-btn {
+                font-size: 16px;
+                letter-spacing: 1.5px;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="glow-bg"></div>
 
     <div class="login-card reveal">
         <div class="logo-box">
-            <img src="asset/white.webp" alt="Stackly">
+            <img src="./asset/white.webp" alt="Stackly">
         </div>
         <h1 class="login-title">Secure Log In</h1>
 
@@ -196,7 +280,6 @@
                 <select class="styled-select">
                     <option>Corporate Client</option>
                     <option>Enterprise Partner</option>
-                    <option>Security Analyst</option>
                 </select>
             </div>
 
@@ -206,12 +289,12 @@
             <label class="form-label">Password</label>
             <div class="password-wrapper">
                 <input type="password" class="input-box" placeholder="********" required>
-                <span class="password-toggle" aria-label="Show password"><i class="  fa-eye"></i></span>
+                <span class="password-toggle" aria-label="Show password"><i class="fa-solid fa-eye"></i></span>
             </div>
 
             <div class="form-footer">
                 <label class="remember-me">
-                    <input type="checkbox"> Remember
+                    <input type="checkbox"> Remember me
                 </label>
                 <a href="404.html" class="forgot-pass">Forgot password?</a>
             </div>
@@ -239,6 +322,7 @@
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const form = e.target;
+            const roleSelect = form.querySelector('.styled-select');
             const emailInput = form.querySelector('input[type="email"]');
             const passwordInput = form.querySelector('input[type="password"]');
             const message = form.querySelector('.form-message');
@@ -272,15 +356,18 @@
             btn.innerText = 'AUTHENTICATING...';
 
             setTimeout(() => {
+                const role = roleSelect.value;
+                const redirectUrl = role === 'Enterprise Partner' ? 'dashboard-1.html' : 'dashborad.html';
+                
                 btn.innerText = 'ACCESS GRANTED';
                 btn.style.borderColor = '#2ecc71';
                 btn.style.color = '#2ecc71';
-                message.textContent = 'Login successful. Redirecting...';
+                message.textContent = `Login successful as ${role}. Redirecting...`;
                 message.className = 'form-message success';
-                setTimeout(() => window.location.href = 'dashborad.html', 1000);
+                setTimeout(() => window.location.href = redirectUrl, 1000);
             }, 1200);
         });
     </script>
 </body>
-</html>
 
+</html>

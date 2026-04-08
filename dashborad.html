@@ -37,8 +37,22 @@
         }
 
         .sidebar-logo {
-            margin-bottom: 10px;
-            padding-left: 10px;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .sidebar-logo .logo {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .sidebar-logo img {
+            height: 50px !important;
+            filter: drop-shadow(0 0 12px rgba(184, 21, 199, 0.4));
         }
 
 
@@ -235,7 +249,7 @@
         <aside class="sidebar">
             <div class="sidebar-logo">
                 <a href="index.html" class="logo">
-                <img src=\"asset/white.webp\" alt=\"Stackly\" style=\"height: 45px;\">
+                <img src="./asset/white.webp" alt="Stackly" style="height: 45px;">
             </a>
             </div>
 
@@ -248,7 +262,7 @@
             </nav>
 
             <div class="sidebar-footer">
-                <a href="index.html" class="nav-item" style="color: #ff4d4d; opacity: 0.8;"><i class="fa-solid fa-power-off"></i> Terminate Session</a>
+                <a href="login.html" class="nav-item" style="color: #ff4d4d; opacity: 0.8;"><i class="fa-solid fa-power-off"></i> Terminate Session</a>
             </div>
         </aside>
 

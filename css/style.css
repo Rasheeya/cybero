@@ -166,9 +166,23 @@ header.scrolled {
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 1.5rem;
-    letter-spacing: 1px;
+    gap: 12px;
+    text-decoration: none;
+    border: none !important;
+    outline: none !important;
+}
+
+.logo img {
+    height: 42px;
+    width: auto;
+    filter: drop-shadow(0 0 10px rgba(189, 85, 242, 0.3));
+    transition: var(--transition);
+    border: none !important;
+}
+
+.logo:hover img {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(189, 85, 242, 0.5));
 }
 
 .logo span {
@@ -464,8 +478,6 @@ header.scrolled {
     white-space: nowrap;
     transition: gap 0.3s ease;
     margin-top: auto;
-}
-    transition: gap 0.3s ease;
 }
 
 .learn-more:hover {
